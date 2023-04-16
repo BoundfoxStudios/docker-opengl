@@ -3,11 +3,11 @@
 SHELL                   := /usr/bin/env bash
 SED                     := $(shell [[ `command -v gsed` ]] && echo gsed || echo sed)
 REPO_API_URL            ?= https://hub.docker.com/v2
-REPO_NAMESPACE          ?= utensils
-REPO_USERNAME           ?= utensils
+REPO_NAMESPACE          ?= BoundfoxStudios
+REPO_USERNAME           ?= BoundfoxStudios
 IMAGE_NAME              ?= opengl
-BASE_IMAGE              ?= alpine:3.12
-LLVM_VERSION            ?= 10
+BASE_IMAGE              ?= alpine:edge
+LLVM_VERSION            ?= 15
 TAG_SUFFIX              ?= $(shell echo "-$(BASE_IMAGE)" | $(SED) 's|:|-|g' | $(SED) 's|/|_|g' 2>/dev/null )
 VCS_REF                 := $(shell git rev-parse --short HEAD)
 BUILD_DATE              := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -19,7 +19,6 @@ BUILD_PROGRESS          ?= auto
 BUILD_OUTPUT            ?= type=registry
 BUILD_TYPE              ?= release
 BUILD_OPTIMIZATION      ?= 3
-MICRO_BADGER_URL        ?=
 
 # Default target is to build all defined Mesa releases.
 .PHONY: default
@@ -31,7 +30,6 @@ all: $(RELEASES)
 # Build base images for all releases using buildx.
 .PHONY: $(RELEASES)
 .SILENT: $(RELEASES)
-export MICRO_BADGER_URL
 export BUILD_OUTPUT
 $(RELEASES):
 	if [ "$(@)" == "stable" ]; \
@@ -58,11 +56,6 @@ $(RELEASES):
 		--progress=$(BUILD_PROGRESS) \
 		--output=$(BUILD_OUTPUT) \
 		--file Dockerfile .
-	if [ ! -z "$$MICRO_BADGER_URL" ] && [ "$$BUILD_OUTPUT" == "type=registry" ]; \
-	then \
-		echo "Triggering MicroBadger WebHook"; \
-		curl -d "update" "$$MICRO_BADGER_URL"; \
-	fi
 	
 # Update README on DockerHub registry.
 .PHONY: push-readme

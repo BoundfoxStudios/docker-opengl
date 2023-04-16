@@ -131,13 +131,13 @@ ARG BUILD_DATE
 ARG MESA_DEMOS
 ARG MESA_VERSION
 LABEL \
-    org.opencontainers.image.authors="James Brink <brink.james@gmail.com>" \
+    org.opencontainers.image.authors="Manuel Rauber <manuel.rauber@boundfoxstudios.com>" \
     org.opencontainers.image.created="${BUILD_DATE}" \
     org.opencontainers.image.description="Mesa3D OpenGL Software Drivers." \
     org.opencontainers.image.revision="${VCS_REF}" \
-    org.opencontainers.image.source="https://github.com/utensils/docker-opengl" \
+    org.opencontainers.image.source="https://github.com/boundfoxstudios/docker-opengl" \
     org.opencontainers.image.title="Mesa3D OpenGL ${MESA_VERSION}" \
-    org.opencontainers.image.vendor="Utensils" \
+    org.opencontainers.image.vendor="Boundfox Studios" \
     org.opencontainers.image.version="${MESA_VERSION}"
 
 # Setup our environment variables.
