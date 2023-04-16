@@ -6,19 +6,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform:
-          - linux/amd64
-#          - linux/386
-#          - linux/arm64
-#          - linux/arm/v7
     steps:
     - uses: actions/checkout@v3
+    - name: prepare Docker
+      run: |
+        sudo apt update
+        sudo apt install -y qemu qemu-user-static qemu-user binfmt-support
+        git clone https://github.com/computermouth/qemu-static-conf.git
+        sudo mkdir -p /lib/binfmt.d
+        sudo cp qemu-static-conf/*.conf /lib/binfmt.d/
+        sudo systemctl restart systemd-binfmt.service
+        sudo apt purge -y docker-ce docker-ce-cli
+        sudo curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        sudo usermod -aG docker $(whoami)
+        mkdir $HOME/.docker
+        sh -c 'echo "{ \"experimental\": \"enabled\" }" >> $HOME/.docker/config.json'
+        docker buildx create --name=qemu
+        docker buildx inspect --bootstrap qemu
+        docker buildx use qemu
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build
-      run: make stable PLATFORM=${{ matrix.platform }}
+      run: make stable
