@@ -59,23 +59,17 @@ RUN set -xe; \
 # Build Mesa from source.
 ARG BUILD_TYPE=release
 ARG BUILD_OPTIMIZATION=3
+
 RUN set -xe; \
     cd /var/tmp/build/mesa; \
     libtoolize; \
-    if [ "$(uname -m)" ==  "aarch64" ] || [ "$(uname -m)" == "armv7l" ]; \
-    then \
-        galium_drivers=swrast; \
-    else \
-        galium_drivers=swrast,swr; \
-    fi ;\
-    meson \
+    PATH="/usr/lib/llvm${LLVM_VERSION}/bin:$PATH" meson setup \
         --buildtype=${BUILD_TYPE} \
         --prefix=/usr/local \
         --sysconfdir=/etc \
         -D b_ndebug=true \
         -D egl=true \
         -D gallium-nine=false \
-        -D gallium-xvmc=false \
         -D gbm=true \
         -D gles1=false \
         -D gles2=true \
@@ -84,21 +78,20 @@ RUN set -xe; \
         -D dri-drivers= \
         -D dri3=true  \
         -D egl=false \
-        -D gallium-drivers="$galium_drivers" \
+        -D gallium-drivers=swrast \
         -D gbm=false \
         -D glx=dri \
         -D llvm=true \
         -D lmsensors=false \
         -D optimization=${BUILD_OPTIMIZATION} \
-        -D osmesa=gallium  \
-        -D platforms=drm,x11,wayland \
+        -D osmesa=true  \
+        -D platforms=auto,x11,wayland \
         -D shared-glapi=true \
         -D shared-llvm=true \
         -D vulkan-drivers= \
         build/; \
     ninja -C build/ -j $(getconf _NPROCESSORS_ONLN); \
-    ninja -C build/ install; \
-    ninja -C build/ xmlpool-pot xmlpool-update-po xmlpool-gmo;
+    ninja -C build/ install;
 
 # Copy our entrypoint into the container.
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh

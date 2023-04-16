@@ -3,18 +3,18 @@
 SHELL                   := /usr/bin/env bash
 SED                     := $(shell [[ `command -v gsed` ]] && echo gsed || echo sed)
 REPO_API_URL            ?= https://hub.docker.com/v2
-REPO_NAMESPACE          ?= BoundfoxStudios
-REPO_USERNAME           ?= BoundfoxStudios
+REPO_NAMESPACE          ?= boundfoxstudios
+REPO_USERNAME           ?= boundfoxstudios
 IMAGE_NAME              ?= opengl
 BASE_IMAGE              ?= alpine:edge
 LLVM_VERSION            ?= 15
 TAG_SUFFIX              ?= $(shell echo "-$(BASE_IMAGE)" | $(SED) 's|:|-|g' | $(SED) 's|/|_|g' 2>/dev/null )
 VCS_REF                 := $(shell git rev-parse --short HEAD)
 BUILD_DATE              := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-PLATFORMS               ?= linux/amd64,linux/386,linux/arm64,linux/arm/v7
-RELEASES                ?= latest stable 20.0.6 20.1.1 20.1.2
-STABLE                  ?= 20.0.6
-LATEST                  ?= 20.1.2
+PLATFORM                ?= 
+RELEASES                ?= latest stable
+STABLE                  ?= 22.3.7
+LATEST                  ?= 23.0.0
 BUILD_PROGRESS          ?= auto
 BUILD_OUTPUT            ?= type=registry
 BUILD_TYPE              ?= release
@@ -52,7 +52,7 @@ $(RELEASES):
 		--cache-from $(REPO_NAMESPACE)/$(IMAGE_NAME):$(@)$(TAG_SUFFIX) \
 		--tag $(REPO_NAMESPACE)/$(IMAGE_NAME):$(@)$(TAG_SUFFIX) \
 		--tag $(REPO_NAMESPACE)/$(IMAGE_NAME):$(@) \
-		--platform=$(PLATFORMS) \
+		--platform=$(PLATFORM) \
 		--progress=$(BUILD_PROGRESS) \
 		--output=$(BUILD_OUTPUT) \
 		--file Dockerfile .
