@@ -62,7 +62,7 @@ $(RELEASES):
 .SILENT: push-readme
 push-readme:
 	echo "Authenticating to $(REPO_API_URL)"; \
-		token=$$(curl -s -X POST -H "Content-Type: application/json" -d '{"username": "$(REPO_USERNAME)", "password": "'"$$REPO_PASSWORD"'"}' $(REPO_API_URL)/users/login/ | jq -r .token); \
+		token=$$(curl -s -X POST -H "Content-Type: application/json" -d '{"username": "$(DOCKERHUB_USERNAME)", "password": "'"$$DOCKERHUB_TOKEN"'"}' $(REPO_API_URL)/users/login/ | jq -r .token); \
 		code=$$(jq -n --arg description "$$(<README.md)" '{"registry":"registry-1.docker.io","full_description": $$description }' | curl -s -o /dev/null  -L -w "%{http_code}" $(REPO_API_URL)/repositories/$(REPO_NAMESPACE)/$(IMAGE_NAME)/ -d @- -X PATCH -H "Content-Type: application/json" -H "Authorization: JWT $$token"); \
 		if [ "$$code" != "200" ]; \
 		then \

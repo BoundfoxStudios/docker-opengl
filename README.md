@@ -7,9 +7,10 @@ Minimal Docker container bundled with the Mesa 3D Gallium Drivers: [LLVMpipe][me
 ## Features
 
 - Alpine Linux Edge
-- LLVMpipe Driver (Mesa 20.0.6)
-- OpenSWR Driver (Mesa 20.0.6)
-- OSMesa Interface (Mesa 20.0.6)
+- Mesa Versions: latest stable 22.3.7
+- LLVMpipe Driver
+- OpenSWR Driver
+- OSMesa Interface
 - softpipe - Reference Gallium software driver
 - swrast - Legacy Mesa software rasterizer
 - Xvfb - X Virtual Frame Buffer
@@ -20,6 +21,8 @@ Please note there are images available for Alpine versions 3.10, 3.11 as well. P
 | Image                           | Description         | Architectures             | Base Image  |
 | ------------------------------- | ------------------- | ------------------------- | ----------- |
 | `boundfoxstudios/opengl:latest` | Latest Mesa version | amd64, 386, arm64, arm/v7 | alpine:edge |
+| `boundfoxstudios/opengl:stable` | Stable Mesa version | amd64, 386, arm64, arm/v7 | alpine:edge |
+| `boundfoxstudios/opengl:22.3.7` | Mesa version 22.3.7 | amd64, 386, arm64, arm/v7 | alpine:edge |
 
 ## Building
 
