@@ -42,7 +42,7 @@ make all
 
 ## Usage
 
-This image is intended to be used as a base image to extend from. One good example of this is the [Envisaged][Envisaged] project which allows for quick and easy Gource visualizations from within a Docker container.
+This image is intended to be used as a base image to extend from. One good example of this is the [Gource][Gource] project which allows for quick and easy Gource visualizations from within a Docker container.
 
 Extending from this image.
 
@@ -76,5 +76,5 @@ The following environment variables are present to modify rendering options.
 
 [openswr]: http://openswr.org/
 [mesa-llvm]: https://www.mesa3d.org/llvmpipe.html
-[Envisaged]: https://github.com/utensils/Envisaged
-[DockerHub]: https://hub.docker.com/repository/docker/utensils/opengl/tags?page=1
+[Gource]: https://github.com/BoundfoxStudios/gource-action
+[DockerHub]: https://hub.docker.com/repository/docker/boundfoxstudios/opengl/tags?page=1
