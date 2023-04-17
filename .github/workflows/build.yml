@@ -20,4 +20,10 @@ jobs:
     - name: Build
       run: | 
         make all
-        make push-readme
+    - name: Update readme
+      uses: peter-evans/dockerhub-description@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: boundfoxstudios/opengl
+        short-description: ${{ github.event.repository.description }}
