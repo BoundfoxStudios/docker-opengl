@@ -32,6 +32,8 @@ RUN set -xe; \
         libxxf86vm-dev \
         llvm${LLVM_VERSION} \
         llvm${LLVM_VERSION}-dev \
+        llvm-libunwind-dev \
+        eudev-libs \
         makedepend \
         meson \
         py-mako \
